@@ -124,8 +124,8 @@ app.post("/like/remove", auth, async (req,res)=>{
   if(header){
       header.likes = header.likes.filter((el)=>{ return el != uid });
       header.save();
-      res.status(201).send("like removed");
-  } else res.send("header not fount");
+      res.json({'success': 'true'});
+  } else res.json({'success': 'false' ,'err':'header not found'});
 });
 
 
@@ -135,13 +135,13 @@ app.post("/like/add", auth, async (req,res)=>{
   const header = await NewsH.findOne({_id: headerID});
   if(header){
     if( header.likes.includes(uid) )
-      res.status(201).send("alredy liked!");
+      res.json({'success': 'false' ,'err':'alredy liked!'});
     else {
       header.likes.push(uid);
       header.save();
-      res.send("liked");
+      res.json({'success': 'true'});
     }
-  } else res.send("header not fount");
+  } else res.json({'success': 'false' ,'err':'header not found'});
 });
 
 
